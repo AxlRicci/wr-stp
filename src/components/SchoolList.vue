@@ -24,14 +24,19 @@
             >
           </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title v-text="school.name"></v-list-item-title>
-            <v-list-item-subtitle v-text="school.board"></v-list-item-subtitle>
-          </v-list-item-content>
-
-          <!-- <v-list-item-avatar>
-          <v-img :src="item.avatar"></v-img>
-        </v-list-item-avatar> -->
+          <router-link
+            :to="{
+              name: 'SchoolProfile',
+              params: { slug: school.slug, school: school }
+            }"
+          >
+            <v-list-item-content>
+              <v-list-item-title v-text="school.name"></v-list-item-title>
+              <v-list-item-subtitle
+                v-text="school.board"
+              ></v-list-item-subtitle>
+            </v-list-item-content>
+          </router-link>
         </v-list-item>
       </v-list>
     </v-card>

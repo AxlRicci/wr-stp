@@ -11,9 +11,10 @@ const routes = [
     component: Home
   },
   {
-    path: 'school/:slug',
+    path: '/school/:slug',
     name: 'SchoolProfile',
-    component: () => import('../views/SchoolProfile.vue')
+    component: () => import('../views/SchoolProfile.vue'),
+    props: true
   },
   {
     path: '/about',
