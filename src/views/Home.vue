@@ -1,18 +1,48 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="school-list--wrapper">
+    <div class="school-list--kitchener">
+      <SchoolList :schools="schools" city="Kitchener" />
+    </div>
+    <div class="school-list--cambridge">
+      <SchoolList :schools="schools" city="Cambridge" />
+    </div>
+    <div class="school-list--waterloo">
+      <SchoolList :schools="schools" city="Waterloo" />
+    </div>
+    <div class="school-list--townships">
+      <SchoolList :schools="schools" city="Townships" />
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+import { db } from '@/services/firebase.js'
+import SchoolList from '@/components/SchoolList'
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
-    HelloWorld
+    SchoolList
+  },
+  data() {
+    return {
+      componentKey: 0
+    }
+  },
+  firestore() {
+    return {
+      schools: db.collection('schoolData')
+    }
   }
-};
+}
 </script>
+
+<style lang="scss" scoped>
+.school-list {
+  &--wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-right: 20px;
+  }
+}
+</style>
