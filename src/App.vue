@@ -1,7 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark> </v-app-bar>
-
+    <Navbar />
     <v-content>
       <router-view>
         <Home />
@@ -12,10 +11,12 @@
 
 <script>
 import Home from '@/views/Home'
+import Navbar from '@/components/Navbar'
 export default {
   name: 'App',
   components: {
-    Home
+    Home,
+    Navbar
   },
   data: () => ({
     //
