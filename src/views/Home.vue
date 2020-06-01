@@ -1,36 +1,33 @@
 <template>
-  <div class="school-list--wrapper">
-    <div class="school-list--kitchener">
-      <SchoolList :schools="schools" city="Kitchener" />
-    </div>
-    <div class="school-list--cambridge">
-      <SchoolList :schools="schools" city="Cambridge" />
-    </div>
-    <div class="school-list--waterloo">
-      <SchoolList :schools="schools" city="Waterloo" />
-    </div>
-    <div class="school-list--townships">
-      <SchoolList :schools="schools" city="Townships" />
-    </div>
-  </div>
+  <SchoolsTable :schools="this.schools" />
 </template>
 
 <script>
 import { db } from '@/services/firebase.js'
-import SchoolList from '@/components/SchoolList'
+import SchoolsTable from '@/components/SchoolsTable'
 export default {
   name: 'Home',
   components: {
-    SchoolList
+    SchoolsTable
   },
   data() {
     return {
-      componentKey: 0
+      schools: {}
     }
   },
   firestore() {
     return {
-      schools: db.collection('schoolData')
+      schools: {
+        ref: db.collection('schoolData'),
+        objects: true,
+        resolve: data => {
+          this.schools = data
+          console.log(this.schools)
+        },
+        reject: err => {
+          console.log('error fetching school from firestore', err)
+        }
+      }
     }
   }
 }
