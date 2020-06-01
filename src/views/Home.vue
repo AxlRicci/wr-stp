@@ -1,14 +1,19 @@
 <template>
-  <SchoolsTable :schools="this.schools" />
+  <div>
+    <RegionalStpGraph :schools="this.schools" />
+    <SchoolsTable :schools="this.schools" />
+  </div>
 </template>
 
 <script>
 import { db } from '@/services/firebase.js'
 import SchoolsTable from '@/components/SchoolsTable'
+import RegionalStpGraph from '@/components/RegionalStpGraph'
 export default {
   name: 'Home',
   components: {
-    SchoolsTable
+    SchoolsTable,
+    RegionalStpGraph
   },
   data() {
     return {
