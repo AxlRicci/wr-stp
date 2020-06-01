@@ -7,46 +7,8 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col><h2>Activities</h2></v-col>
-    </v-row>
-    <v-row>
-      <v-col class="d-flex ma-0" v-for="cat in categories" :key="cat">
-        <div>
-          <v-card class="mx-auto" max-width="300" tile>
-            <v-list dense>
-              <v-subheader>
-                <v-row class="d-flex justify-start">
-                  <v-col>
-                    <h2>
-                      {{ cat.charAt(0).toUpperCase() + cat.substring(1) }}
-                    </h2>
-                  </v-col>
-                  <v-col>
-                    <v-progress-circular
-                      :value="percentComplete(school[cat], cat)"
-                      color="deep-orange lighten-2"
-                    ></v-progress-circular>
-                  </v-col>
-                </v-row>
-              </v-subheader>
-              <v-list-item-group>
-                <v-list-item v-for="act in school[cat]" :key="act.name">
-                  <v-list-item-icon>
-                    <v-icon
-                      v-text="completeIcon(act)"
-                      :color="completeColor(act)"
-                    ></v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-text="act.name.split(/(?=[A-Z])/).join(' ')"
-                    ></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-card>
-        </div>
+      <v-col>
+        <ActivityList :school="this.school" />
       </v-col>
     </v-row>
   </v-content>
@@ -54,7 +16,11 @@
 
 <script>
 import { db } from '@/services/firebase.js'
+import ActivityList from '@/components/ActivityList'
 export default {
+  components: {
+    ActivityList
+  },
   props: {
     slug: {
       type: String,
@@ -70,13 +36,38 @@ export default {
         'enforcement',
         'evaluation',
         'engineering'
-      ]
+      ],
+      school: {}
     }
   },
   firestore() {
     return {
-      school: db.collection('schoolData').doc(this.slug),
+      school: {
+        ref: db.collection('schoolData'),
+        objects: true,
+        resolve: data => {
+          this.school = data[this.slug]
+        },
+        reject: err => {
+          console.log('error fetching school from firestore', err)
+        }
+      },
       gold: db.collection('rankingInfo').doc('gold')
+    }
+  },
+  computed: {
+    percentComplete(activities, category) {
+      if (activities) {
+        let totalPoints = 0
+        Object.keys(activities).forEach(activity => {
+          if (activity.complete) {
+            console.log(activity)
+            totalPoints += activity.points
+          }
+        })
+        console.log(totalPoints, '/', this.gold[category])
+      }
+      return null
     }
   },
   methods: {
@@ -92,18 +83,6 @@ export default {
         return 'success'
       } else {
         return '#F44336'
-      }
-    },
-    percentComplete(activities, category) {
-      if (activities) {
-        let totalPoints = 0
-        Object.keys(activities).forEach(activity => {
-          if (activity.complete) {
-            console.log(activity)
-            totalPoints += activity.points
-          }
-        })
-        console.log(totalPoints, '/', this.gold[category])
       }
     }
   }
