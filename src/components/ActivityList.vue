@@ -57,10 +57,8 @@ export default {
   methods: {
     populateActivities() {
       this.categories.forEach(category => {
-        console.log(this.school, category)
         if (Object.prototype.hasOwnProperty.call(this.school, category)) {
           Object.keys(this.school[category]).forEach(activity => {
-            console.log(this.school[category][activity])
             this.activities.push({
               category: `${category.charAt(0).toUpperCase() +
                 category.slice(1)}`,

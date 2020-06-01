@@ -8,6 +8,11 @@
     </v-row>
     <v-row>
       <v-col>
+        <ProgressGraph :school="this.school" :gold="this.gold" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
         <ActivityList :school="this.school" />
       </v-col>
     </v-row>
@@ -17,9 +22,11 @@
 <script>
 import { db } from '@/services/firebase.js'
 import ActivityList from '@/components/ActivityList'
+import ProgressGraph from '@/components/ProgressGraph'
 export default {
   components: {
-    ActivityList
+    ActivityList,
+    ProgressGraph
   },
   props: {
     slug: {
@@ -37,7 +44,8 @@ export default {
         'evaluation',
         'engineering'
       ],
-      school: {}
+      school: {},
+      gold: []
     }
   },
   firestore() {
@@ -52,7 +60,16 @@ export default {
           console.log('error fetching school from firestore', err)
         }
       },
-      gold: db.collection('rankingInfo').doc('gold')
+      gold: {
+        ref: db.collection('rankingInfo'),
+        objects: true,
+        resolve: data => {
+          this.gold = data.gold
+        },
+        reject: err => {
+          console.log('error fetching rank from firestore', err)
+        }
+      }
     }
   },
   computed: {
