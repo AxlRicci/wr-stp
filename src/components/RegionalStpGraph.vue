@@ -59,7 +59,6 @@ export default {
       Object.keys(this.schools).forEach(school => {
         ranks[this.schools[school].overall.toLowerCase()] += 1
       })
-      console.log(ranks)
 
       this.chartOptions.series[0].data = Object.keys(ranks).map(rank => {
         return ranks[rank]

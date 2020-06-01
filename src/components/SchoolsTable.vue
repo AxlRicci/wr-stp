@@ -8,6 +8,7 @@
       class="elevation-1"
       :items-per-page="100"
       show-group-by
+      @click:row="goToSchoolProfile"
     >
       <template v-slot:item.overall="{ item }">
         <v-chip :color="getColor(item.overall)" text-color="#000" dark>{{
@@ -47,6 +48,16 @@ export default {
     }
   },
   methods: {
+    log(data) {
+      console.log(data)
+    },
+    goToSchoolProfile(data) {
+      console.log(data)
+      this.$router.push({
+        name: 'SchoolProfile',
+        params: { slug: data.slug, school: data }
+      })
+    },
     populateSchoolArray() {
       console.log(this.schools)
       Object.keys(this.schools).forEach(school => {
