@@ -1,10 +1,20 @@
 <template>
-  <v-content>
-    <v-row>
+  <v-container>
+    <v-row justify="center">
+      <v-spacer></v-spacer>
       <v-col>
-        <h1>{{ school.name }}</h1>
-        <h3>{{ `${school.city}, ${school.board}` }}</h3>
+        <h1 class="text-center">{{ school.name }}</h1>
+        <h3 class="text-center">{{ `${school.city}, ${school.board}` }}</h3>
+        <h4 class="text-center">
+          Current Rank:
+          {{
+            school.overall
+              ? school.overall.charAt(0) + school.overall.toLowerCase().slice(1)
+              : null
+          }}
+        </h4>
       </v-col>
+      <v-spacer></v-spacer>
     </v-row>
     <v-row>
       <v-col>
@@ -16,7 +26,7 @@
         <ActivityList :school="this.school" />
       </v-col>
     </v-row>
-  </v-content>
+  </v-container>
 </template>
 
 <script>
